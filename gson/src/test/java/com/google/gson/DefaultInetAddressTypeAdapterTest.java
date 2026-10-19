@@ -72,9 +72,7 @@ public class DefaultInetAddressTypeAdapterTest {
     for (String address : new String[] {"300.1.1.1", "999.999.999.999", "zz:1"}) {
       String jsonAddress = "\"" + address + "\"";
       JsonSyntaxException e =
-          assertThrows(
-              JsonSyntaxException.class,
-              () -> gson.fromJson(jsonAddress, InetAddress.class));
+          assertThrows(JsonSyntaxException.class, () -> gson.fromJson(jsonAddress, InetAddress.class));
       assertThat(e)
           .hasMessageThat()
           .startsWith("Failed parsing '" + address + "' as InetAddress; at path $");
