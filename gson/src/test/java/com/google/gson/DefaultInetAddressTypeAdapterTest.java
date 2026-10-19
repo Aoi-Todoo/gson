@@ -68,6 +68,19 @@ public class DefaultInetAddressTypeAdapterTest {
   }
 
   @Test
+  public void testInetAddressDeserializeMalformedIpAddress() {
+    for (String address : new String[] {"300.1.1.1", "999.999.999.999", "zz:1"}) {
+      JsonSyntaxException e =
+          assertThrows(
+              JsonSyntaxException.class,
+              () -> gson.fromJson("\"" + address + "\"", InetAddress.class));
+      assertThat(e)
+          .hasMessageThat()
+          .startsWith("Failed parsing '" + address + "' as InetAddress; at path $");
+    }
+  }
+
+  @Test
   public void testInetAddressDeserializeNonIpAddressAllowed() throws Exception {
     String jsonAddress = "\"localhost\"";
     InetAddress expected = InetAddress.getByName("localhost");
